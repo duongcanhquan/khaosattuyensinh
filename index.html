@@ -24,13 +24,8 @@
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         
-        /* Hiệu ứng Logo thả trôi */
         .logo-container { text-align: center; margin-bottom: 20px; }
-        .main-logo {
-            max-width: 180px; height: auto;
-            animation: floatLogo 3s ease-in-out infinite;
-            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.2));
-        }
+        .main-logo { max-width: 250px; height: auto; animation: floatLogo 3s ease-in-out infinite; filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.2)); }
         @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         .card-custom {
@@ -48,21 +43,32 @@
 
         .btn-submit {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
-            font-weight: 800; font-size: 1.2rem; padding: 18px 30px; border-radius: 50px; border: none;
+            font-weight: 800; font-size: 1.3rem; padding: 20px 30px; border-radius: 50px; border: none;
             text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(118, 75, 162, 0.4);
         }
         .btn-submit:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(118, 75, 162, 0.6); color: white; }
         .btn-submit:active { transform: translateY(2px); }
         
-        .btn-dropdown-custom { background: rgba(255,255,255,0.9); border: 2px solid #667eea; color: #475569; border-radius: 50px; font-weight: 700; }
-        .dropdown-menu-custom { border-radius: 20px; border: none; box-shadow: 0 15px 40px rgba(0,0,0,0.15); padding: 15px; }
-
         .header-title { color: #ffffff; font-weight: 900; text-shadow: 0 4px 15px rgba(0,0,0,0.2); letter-spacing: -1px; }
         .section-title { font-weight: 800; color: #1e293b; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
         .icon-gradient-1 { background: -webkit-linear-gradient(#ee7752, #e73c7e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .icon-gradient-2 { background: -webkit-linear-gradient(#23a6d5, #23d5ab); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .icon-gradient-3 { background: -webkit-linear-gradient(#667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
+        .btn-check-custom { width: 100%; cursor: pointer; margin-bottom: 15px; display: block; }
+        .check-content {
+            background: rgba(248, 250, 252, 0.7); border: 2px solid transparent;
+            transition: all 0.3s ease; border-radius: 18px; padding: 18px 20px;
+        }
+        .btn-check-custom input:checked + .check-content {
+            background: #ffffff; border-color: #667eea; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15); transform: translateY(-3px);
+        }
+        .check-content i { color: #94a3b8; transition: all 0.3s; font-size: 1.5rem; }
+        .btn-check-custom input:checked + .check-content i.fa-fire { color: #e73c7e; }
+        .btn-check-custom input:checked + .check-content i.fa-puzzle-piece { color: #23d5ab; }
+        .btn-check-custom input:checked + .check-content i.fa-gift { color: #f59e0b; }
+        .btn-check-custom input:checked + .check-content .title-text { color: #1e293b; font-weight: 800 !important; }
+
         .question-box { background: rgba(248, 250, 252, 0.6); padding: 22px; border-radius: 18px; margin-bottom: 20px; border: 1px solid rgba(226, 232, 240, 0.8); transition: all 0.3s; }
         .question-box:hover { background: #ffffff; border-color: #667eea; transform: scale(1.02); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15); }
         .question-box p { font-weight: 700; margin-bottom: 12px; font-size: 1.05rem; }
@@ -80,17 +86,19 @@
         
         #loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
 
-        /* TỐI ƯU HÓA MOBILE */
+        .lucky-display { font-family: 'Courier New', Courier, monospace; letter-spacing: 5px; background: #fffbeb; border: 3px dashed #f59e0b; }
+
         @media (max-width: 768px) {
             .card-custom { padding: 20px; margin-bottom: 15px; border-radius: 20px; }
             .header-title { font-size: 2rem; }
-            .form-control, .form-select { padding: 12px 15px; font-size: 16px; /* Cấm iOS tự zoom */ }
+            .form-control, .form-select { padding: 12px 15px; font-size: 16px; }
             .btn-submit { font-size: 1.1rem; padding: 15px 20px; width: 100%; }
             .question-box { padding: 15px; }
             .swal2-popup { padding: 15px !important; width: 95% !important; }
             .swal-big-text { font-size: 1.6rem; }
-            .logo-container { margin-bottom: 10px; }
-            .main-logo { max-width: 140px; }
+            .check-content { padding: 12px 15px; }
+            .check-content i { font-size: 1.2rem; }
+            .lucky-display { font-size: 2rem !important; letter-spacing: 2px; }
         }
     </style>
 </head>
@@ -98,83 +106,53 @@
 
     <div class="container animate__animated animate__fadeInDown">
         
- <div class="logo-container">
-            <img src="https://raw.githubusercontent.com/duongcanhquan/image/main/Logo%20Cao%20%C4%91a%CC%86%CC%89ng%20Vie%CC%A3%CC%82t%20My%CC%83%20-%20ba%CC%89n%20chua%CC%82%CC%89n%202025-01.png" alt="Logo Cao Đẳng Việt Mỹ" class="main-logo" style="max-width: 250px;">
+        <div class="logo-container">
+            <img src="https://raw.githubusercontent.com/duongcanhquan/image/main/Logo%20Cao%20%C4%91a%CC%86%CC%89ng%20Vie%CC%A3%CC%82t%20My%CC%83%20-%20ba%CC%89n%20chua%CC%82%CC%89n%202025-01.png" alt="Logo Cao Đẳng Việt Mỹ" class="main-logo">
         </div>
 
         <div class="text-center mb-4 mb-md-5">
             <h1 class="header-title display-5">🚀 TƯƠNG LAI TRONG TAY BẠN</h1>
-            <p class="text-white fs-5 opacity-75 fw-medium px-2">Định hướng ngành nghề & Rinh lộc may mắn!</p>
+            <p class="text-white fs-5 opacity-75 fw-medium px-2">Định hướng ngành nghề & Rinh lộc may mắn cùng Việt Mỹ!</p>
         </div>
 
         <form id="mainForm">
-            <div class="card-custom">
-                <h3 class="section-title"><i class="fa-solid fa-id-badge icon-gradient-3 fa-lg"></i> Thông Tin Cơ Bản</h3>
-                <div class="row g-3 g-md-4">
-                    <div class="col-md-6">
-                        <label class="form-label">Họ và tên học sinh <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control shadow-sm" id="fullName" required placeholder="Nhập họ tên đầy đủ...">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Ngày sinh <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control shadow-sm" id="dob" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">SĐT Zalo (Nhận kết quả) <span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control shadow-sm" id="zalo" pattern="[0-9]{10}" maxlength="10" title="Vui lòng nhập chính xác 10 chữ số" required placeholder="Ví dụ: 0901234567">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Địa chỉ hiện tại</label>
-                        <input type="text" class="form-control shadow-sm" id="address" placeholder="Quận/Huyện, Tỉnh/Thành phố...">
+            
+            <div class="card-custom border-0" style="box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);">
+                <h3 class="section-title text-center justify-content-center mb-2"><i class="fa-solid fa-layer-group icon-gradient-2 fa-lg"></i> Bạn Muốn Khám Phá Gì?</h3>
+                <p class="text-muted fw-medium mb-4 text-center">Chạm vào các thẻ bên dưới để bắt đầu bài Test nhé (Có thể chọn nhiều mục).</p>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="btn-check-custom">
+                            <input class="form-check-input check-experience d-none" type="checkbox" value="sec-grad" id="chkGrad">
+                            <div class="check-content d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-fire me-3"></i>
+                                <span class="fs-5 fw-semibold text-muted title-text">Dự đoán Tỷ lệ đỗ</span>
+                            </div>
+                        </label>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Đang học trường THPT</label>
-                        <input type="text" class="form-control shadow-sm" id="school" placeholder="Tên trường THPT...">
+                        <label class="btn-check-custom">
+                            <input class="form-check-input check-experience d-none" type="checkbox" value="sec-holland" id="chkHolland">
+                            <div class="check-content d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-puzzle-piece me-3"></i>
+                                <span class="fs-5 fw-semibold text-muted title-text">Test Holland</span>
+                            </div>
+                        </label>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Ngành nghề mong muốn</label>
-                        <input type="text" class="form-control shadow-sm" id="major" placeholder="Ví dụ: Marketing, IT...">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Thầy/Cô tư vấn (Nếu có)</label>
-                        <select class="form-select shadow-sm" id="teacher">
-                            <option value="">Đang tải danh sách...</option>
-                        </select>
+                        <label class="btn-check-custom">
+                            <input class="form-check-input check-experience d-none" type="checkbox" value="sec-lucky" id="chkLucky">
+                            <div class="check-content d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-gift me-3"></i>
+                                <span class="fs-5 fw-semibold text-muted title-text">Rút mã Lì Xì</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
 
-            <div class="card-custom">
-                <h3 class="section-title"><i class="fa-solid fa-layer-group icon-gradient-2 fa-lg"></i> Bạn Muốn Khám Phá Gì?</h3>
-                <div class="dropdown">
-                    <button class="btn btn-dropdown-custom w-100 text-start d-flex justify-content-between align-items-center p-3 fs-5" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span><i class="fa-solid fa-hand-pointer me-2 animate__animated animate__pulse animate__infinite"></i> Bấm để chọn bài Test...</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-custom w-100" aria-labelledby="dropdownMenuButton" onclick="event.stopPropagation()">
-                        <li>
-                            <div class="form-check p-2 rounded hover-bg">
-                                <input class="form-check-input check-experience ms-1" type="checkbox" value="sec-grad" id="chkGrad">
-                                <label class="form-check-label ms-2 fs-6 fs-md-5" for="chkGrad">🎯 Dự đoán Tỷ lệ đỗ Tốt Nghiệp</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="form-check p-2 rounded hover-bg mt-2">
-                                <input class="form-check-input check-experience ms-1" type="checkbox" value="sec-holland" id="chkHolland">
-                                <label class="form-check-label ms-2 fs-6 fs-md-5" for="chkHolland">🧠 Trắc nghiệm Tính cách Holland</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="form-check p-2 rounded hover-bg mt-2">
-                                <input class="form-check-input check-experience ms-1" type="checkbox" value="sec-lucky" id="chkLucky">
-                                <label class="form-check-label ms-2 fs-6 fs-md-5" for="chkLucky">🧧 Rút mã Lì Xì Khai Xuân</label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div id="sec-grad" class="card-custom dynamic-section animate__animated animate__zoomIn">
+            <div id="sec-grad" class="card-custom dynamic-section animate__animated animate__fadeInUp">
                 <h3 class="section-title"><i class="fa-solid fa-fire icon-gradient-1 fa-lg"></i> Tỷ Lệ Đỗ Tốt Nghiệp</h3>
                 
                 <div class="question-box">
@@ -214,7 +192,7 @@
                 </div>
             </div>
 
-            <div id="sec-holland" class="card-custom dynamic-section animate__animated animate__zoomIn">
+            <div id="sec-holland" class="card-custom dynamic-section animate__animated animate__fadeInUp">
                 <h3 class="section-title"><i class="fa-solid fa-puzzle-piece icon-gradient-2 fa-lg"></i> Trắc Nghiệm Holland</h3>
                 
                 <div class="question-box">
@@ -261,17 +239,69 @@
                 </div>
             </div>
 
-            <div id="sec-lucky" class="card-custom dynamic-section text-center animate__animated animate__zoomIn">
+            <div id="sec-lucky" class="card-custom dynamic-section text-center animate__animated animate__fadeInUp">
                 <h3 class="section-title justify-content-center"><i class="fa-solid fa-envelope-open-text icon-gradient-1 fa-lg"></i> Nhận Lì Xì Khai Xuân</h3>
-                <p class="fs-5 text-muted fw-medium">Nhấn Gửi để hệ thống phát lộc tự động cho bạn nhé!</p>
-                <div style="font-size: 80px; text-shadow: 0 10px 20px rgba(0,0,0,0.2); animation: pulse 2s infinite;">🧧</div>
+                <p class="fs-5 text-muted fw-medium mb-4">Hệ thống sẽ sinh ngẫu nhiên mã số may mắn cho bạn.</p>
+                
+                <div class="lucky-display display-4 fw-bold text-warning rounded-4 p-4 mx-auto mb-4 w-75" id="luckyDisplay">
+                    ---------
+                </div>
+                
+                <button type="button" class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-3 shadow" id="btnSpin" onclick="spinLuckyNumber()">
+                    <i class="fa-solid fa-rotate me-2"></i> BẤM ĐỂ QUAY SỐ NHẬN MÃ
+                </button>
+                <input type="hidden" id="luckyCodeInput" name="luckyCodeInput" value="">
             </div>
 
-            <div class="text-center mt-3 mt-md-4">
-                <button type="submit" class="btn btn-submit shadow-lg" id="btnSubmitAll">
-                    <i class="fa-solid fa-paper-plane me-2"></i> GỬI VÀ XEM KẾT QUẢ NGAY
-                </button>
+            <div class="card-custom mt-5" style="border: 2px solid #764ba2; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);"></div>
+                
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-primary mb-2"><i class="fa-solid fa-gift text-danger me-2"></i> Nhận Kết Quả & Lì Xì Ngay!</h3>
+                    <p class="fs-6 text-muted fw-medium">Hãy điền thông tin để chuyên gia tư vấn gửi kết quả phân tích chi tiết và lộc may mắn cho bạn nhé!</p>
+                </div>
+                
+                <div class="row g-3 g-md-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Họ và tên học sinh <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control shadow-sm" id="fullName" required placeholder="Nhập họ tên đầy đủ...">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Ngày sinh <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control shadow-sm" id="dob" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">SĐT Zalo (Nhận kết quả) <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control shadow-sm" id="zalo" pattern="[0-9]{10}" maxlength="10" title="Vui lòng nhập chính xác 10 chữ số" required placeholder="Ví dụ: 0901234567">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Địa chỉ hiện tại</label>
+                        <input type="text" class="form-control shadow-sm" id="address" placeholder="Quận/Huyện, Tỉnh/Thành phố...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Đang học trường THPT</label>
+                        <input type="text" class="form-control shadow-sm" id="school" placeholder="Tên trường THPT...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Ngành nghề mong muốn</label>
+                        <input type="text" class="form-control shadow-sm" id="major" placeholder="Ví dụ: Marketing, IT...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Thầy/Cô tư vấn (Nếu có)</label>
+                        <select class="form-select shadow-sm" id="teacher">
+                            <option value="">Đang tải danh sách...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-submit shadow-lg w-100" id="btnSubmitAll">
+                        <i class="fa-solid fa-paper-plane me-2"></i> GỬI THÔNG TIN VÀ XEM KẾT QUẢ
+                    </button>
+                    <p class="mt-3 small text-muted"><i class="fa-solid fa-shield-halved text-success me-1"></i> Thông tin của bạn được bảo mật tuyệt đối.</p>
+                </div>
             </div>
+
         </form>
     </div>
 
@@ -283,10 +313,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 1. DÁN LINK GOOGLE SCRIPT VÀO ĐÂY (Link mới sau khi cập nhật mã JSONP)
+        // 1. DÁN LINK GOOGLE SCRIPT VÀO ĐÂY
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZu88ArF-bJ8MtApiH4RpmqdzL2WQMa5GSgOaV0sHDahtnLx79rE5OByuyqsF_j11dKA/exec";
 
-        // 2. TẢI DANH SÁCH THẦY CÔ BẰNG JSONP (Chống lỗi CORS)
+        // Tải danh sách Thầy Cô
         function loadTeachersData() {
             if (!GOOGLE_SCRIPT_URL.includes("script.google.com")) return;
             const script = document.createElement('script');
@@ -304,14 +334,10 @@
                 select.appendChild(opt);
             });
         }
-
-        // Kích hoạt hàm khi load trang
         window.addEventListener('load', loadTeachersData);
 
-        // HIỂN THỊ CÁC KHỐI TEST
+        // Hiển thị Khối Test
         const checkBoxes = document.querySelectorAll('.check-experience');
-        const btnDropdown = document.getElementById('dropdownMenuButton');
-
         checkBoxes.forEach(cb => {
             cb.addEventListener('change', function() {
                 const section = document.getElementById(this.value);
@@ -320,27 +346,80 @@
                 } else {
                     section.style.display = 'none';
                 }
-                
-                let checkedCount = document.querySelectorAll('.check-experience:checked').length;
-                btnDropdown.querySelector('span').innerHTML = checkedCount === 0 ? '<i class="fa-solid fa-hand-pointer me-2"></i> Bấm để chọn bài Test...' : `<i class="fa-solid fa-check-double me-2 text-success"></i> Đã chọn ${checkedCount} bài Test`;
-                
                 const radios = section.querySelectorAll('input[type="radio"]');
                 radios.forEach(r => r.required = this.checked);
             });
         });
 
-        // TÍNH TOÁN & HIỂN THỊ KẾT QUẢ
+        // HÀM QUAY SỐ LÌ XÌ
+        let isSpun = false;
+        function spinLuckyNumber() {
+            if(isSpun) return;
+            const btn = document.getElementById('btnSpin');
+            const display = document.getElementById('luckyDisplay');
+            const hiddenInput = document.getElementById('luckyCodeInput');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Đang quay số...';
+
+            let count = 0;
+            const interval = setInterval(() => {
+                display.innerText = Math.floor(Math.random() * 900000000) + 100000000;
+                count++;
+                
+                if(count > 25) { 
+                    clearInterval(interval);
+                    const d = new Date();
+                    const yy = String(d.getFullYear()).slice(-2);
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const rand = String(Math.floor(Math.random()*900)+100);
+                    const finalCode = yy + mm + dd + rand;
+
+                    display.innerText = finalCode;
+                    display.classList.add('animate__animated', 'animate__tada', 'text-danger');
+                    hiddenInput.value = finalCode; 
+                    
+                    btn.innerHTML = '<i class="fa-solid fa-check me-2"></i> ĐÃ NHẬN MÃ THÀNH CÔNG';
+                    btn.classList.replace('btn-warning', 'btn-success');
+                    isSpun = true;
+
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                }
+            }, 50);
+        }
+
+        // TÍNH TOÁN & HIỂN THỊ KẾT QUẢ KHI SUBMIT
         document.getElementById('mainForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Auto tạo mã nếu quên bấm quay số
+            if(document.getElementById('chkLucky').checked && !document.getElementById('luckyCodeInput').value) {
+                const d = new Date();
+                document.getElementById('luckyCodeInput').value = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(Math.floor(Math.random()*900)+100);
+            }
+
+            // Cảnh báo nếu chưa chọn làm bài test nào
+            let checkedCount = document.querySelectorAll('.check-experience:checked').length;
+            if(checkedCount === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Ê khoan đã!',
+                    text: 'Bạn hãy chọn ít nhất 1 bài Test ở phía trên để khám phá nhé!',
+                    confirmButtonText: 'Đã hiểu',
+                    confirmButtonColor: '#764ba2'
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
             document.getElementById('loading').classList.remove('d-none');
             document.getElementById('loading').classList.add('d-flex');
 
             let formData = new FormData(this);
-            
-            // Xử lý ngày sinh
             let dobRaw = document.getElementById('dob').value;
-            let [y, m, d] = dobRaw.split('-');
-            let dobFormatted = `${d}/${m}/${y}`;
+            let [y, m, d_val] = dobRaw.split('-');
+            let dobFormatted = `${d_val}/${m}/${y}`;
 
             let finalData = {
                 fullName: document.getElementById('fullName').value, dob: dobFormatted,
@@ -348,7 +427,8 @@
                 school: document.getElementById('school').value, major: document.getElementById('major').value,
                 teacher: document.getElementById('teacher').value,
                 g1: "", g2: "", g3: "", g4: "", g5: "", gradResult: "",
-                h1: "", h2: "", h3: "", h4: "", h5: "", h6: "", hollandResult: "", luckyCode: ""
+                h1: "", h2: "", h3: "", h4: "", h5: "", h6: "", hollandResult: "", 
+                luckyCode: document.getElementById('luckyCodeInput').value 
             };
 
             let resultHTML = "";
@@ -392,14 +472,11 @@
             }
 
             if(document.getElementById('chkLucky').checked) {
-                const d = new Date();
-                const code = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(Math.floor(Math.random()*900)+100);
-                resultHTML += `<div class="swal-result-box lucky text-center bg-white">
+                resultHTML += `<div class="swal-result-box lucky text-center bg-white border">
                     <h5 class="fw-bold text-muted text-uppercase mb-2"><i class="fa-solid fa-gift text-warning"></i> Mã Lì Xì Của Bạn</h5>
-                    <div class="swal-big-text text-warning border border-warning rounded-pill py-2">${code}</div>
+                    <div class="swal-big-text text-warning border border-warning rounded-pill py-2">${finalData.luckyCode}</div>
                     <p class="mb-0 mt-2 fw-medium small text-muted">Chụp ảnh lại để nhận lộc nhé!</p>
                 </div>`;
-                finalData.luckyCode = code;
             }
 
             let finalAlertHTML = `
@@ -411,7 +488,6 @@
                 ${resultHTML}
             `;
 
-            // Hàm kích hoạt hiệu ứng pháo giấy
             function fireConfetti() {
                 var duration = 3 * 1000; var animationEnd = Date.now() + duration; var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
                 function randomInRange(min, max) { return Math.random() * (max - min) + min; }
@@ -433,7 +509,7 @@
                     document.getElementById('loading').classList.add('d-none');
                     document.getElementById('loading').classList.remove('d-flex');
                     
-                    fireConfetti(); // Bắn pháo giấy
+                    fireConfetti(); 
                     
                     Swal.fire({
                         title: '🎉 GỬI THÀNH CÔNG!',
@@ -447,7 +523,15 @@
 
                     document.getElementById('mainForm').reset();
                     document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
-                    btnDropdown.querySelector('span').innerHTML = '<i class="fa-solid fa-hand-pointer me-2"></i> Bấm để chọn bài Test...';
+                    document.getElementById('luckyCodeInput').value = '';
+                    document.getElementById('luckyDisplay').innerText = '---------';
+                    let spinBtn = document.getElementById('btnSpin');
+                    spinBtn.disabled = false;
+                    spinBtn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> BẤM ĐỂ QUAY SỐ NHẬN MÃ';
+                    spinBtn.classList.replace('btn-success', 'btn-warning');
+                    isSpun = false;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
                 }).catch(err => {
                     document.getElementById('loading').classList.add('d-none');
                     Swal.fire('Lỗi', 'Có lỗi kết nối, vui lòng thử lại.', 'error');
