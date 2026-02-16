@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám Phá Bản Thân - Định Hướng Tương Lai</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+        body { font-family: 'Be Vietnam Pro', sans-serif; background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%); color: #1e293b; padding-bottom: 50px; }
+        .header-banner { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2); margin-bottom: 30px; }
+        .card-custom { background: #ffffff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: none; padding: 30px; margin-bottom: 25px; }
+        .form-control, .form-select { border-radius: 12px; padding: 12px 15px; border: 1px solid #cbd5e1; }
+        .form-control:focus, .form-select:focus { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
+        .section-title { font-weight: 700; color: #2563eb; margin-bottom: 20px; border-bottom: 2px dashed #e2e8f0; padding-bottom: 10px; }
+        .question-box { background: #f8fafc; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+        .question-box p { font-weight: 600; margin-bottom: 10px; color: #0f172a; }
+        .form-check-label { cursor: pointer; color: #475569; }
+        .dynamic-section { display: none; animation: fadeIn 0.5s; }
+        .dropdown-menu-custom { width: 100%; padding: 15px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        .btn-submit { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; font-weight: 700; font-size: 1.2rem; padding: 15px; border-radius: 15px; border: none; transition: all 0.3s; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3); color: white;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-content { border-radius: 20px; border: none; }
+        .modal-header { background: #f8fafc; border-radius: 20px 20px 0 0; }
+        .result-block { background: #eff6ff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #3b82f6; }
+        #loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; text-align: center; padding-top: 20vh; }
+    </style>
+</head>
+<body>
+
+    <div class="header-banner">
+        <h1 class="fw-bold">Khám Phá Tương Lai Cùng Việt Mỹ</h1>
+        <p class="fs-5 opacity-75 mb-0">Điền thông tin và lựa chọn trải nghiệm bạn muốn tham gia!</p>
+    </div>
+
+    <div class="container">
+        <form id="mainForm">
+            <div class="card-custom">
+                <h4 class="section-title"><i class="fa-regular fa-id-card me-2"></i>Thông tin học sinh</h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Họ và tên *</label>
+                        <input type="text" class="form-control" id="fullName" required placeholder="Nhập họ và tên...">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ngày tháng năm sinh *</label>
+                        <input type="date" class="form-control" id="dob" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">SĐT Zalo (Nhận kết quả) *</label>
+                        <input type="tel" class="form-control" id="zalo" required placeholder="Ví dụ: 0901234567">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" placeholder="Quận/Huyện, Tỉnh/Thành...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Em đang học THPT nào?</label>
+                        <input type="text" class="form-control" id="school" placeholder="Tên trường...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Ngành nghề muốn học</label>
+                        <input type="text" class="form-control" id="major" placeholder="Ví dụ: IT, Marketing...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Thầy Cô tư vấn (Nếu có)</label>
+                        <input type="text" class="form-control" id="teacher" placeholder="Tên Thầy/Cô...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-custom">
+                <h4 class="section-title"><i class="fa-solid fa-list-check me-2"></i>Chọn trải nghiệm bạn muốn tham gia</h4>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary w-100 text-start d-flex justify-content-between align-items-center p-3 fw-semibold" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 12px; font-size: 1.1rem;">
+                        <span>Vui lòng chọn các mục bên dưới...</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton" onclick="event.stopPropagation()">
+                        <li>
+                            <div class="form-check fs-5 mb-2">
+                                <input class="form-check-input check-experience" type="checkbox" value="sec-grad" id="chkGrad">
+                                <label class="form-check-label fw-medium" for="chkGrad">🎯 Xem tỷ lệ đỗ tốt nghiệp</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="form-check fs-5 mb-2">
+                                <input class="form-check-input check-experience" type="checkbox" value="sec-holland" id="chkHolland">
+                                <label class="form-check-label fw-medium" for="chkHolland">🧠 Trắc nghiệm tính cách Holland</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="form-check fs-5">
+                                <input class="form-check-input check-experience" type="checkbox" value="sec-lucky" id="chkLucky">
+                                <label class="form-check-label fw-medium" for="chkLucky">🧧 Đăng ký nhận mã quay số LÌ XÌ</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="sec-grad" class="card-custom dynamic-section">
+                <h4 class="section-title text-warning"><i class="fa-solid fa-fire me-2"></i>Xem tỷ lệ đỗ tốt nghiệp</h4>
+                
+                <div class="question-box">
+                    <p>Câu 1️⃣ Gần ngày thi, tâm trạng học tập của bạn là:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g1" value="A"> <label class="form-check-label">A. Vẫn học đều, không quá hoảng 😎</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g1" value="B"> <label class="form-check-label">B. Có hơi áp lực nhưng vẫn cố gắng 📚</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g1" value="C"> <label class="form-check-label">C. Học trước quên sau, hơi rối 😵</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g1" value="D"> <label class="form-check-label">D. Nghĩ tới thi là thấy căng liền 🫠</label></div>
+                </div>
+                <div class="question-box">
+                    <p>Câu 2️⃣ Mỗi ngày bạn dành bao lâu để ôn bài?</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g2" value="A"> <label class="form-check-label">A. Trên 3 tiếng ⏰</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g2" value="B"> <label class="form-check-label">B. 1–2 tiếng ⏱️</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g2" value="C"> <label class="form-check-label">C. Khi nào rảnh mới ôn 😅</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g2" value="D"> <label class="form-check-label">D. Chủ yếu là… để mai 📱</label></div>
+                </div>
+                <div class="question-box">
+                    <p>Câu 3️⃣ Kết quả các bài kiểm tra/thi thử gần đây của bạn:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g3" value="A"> <label class="form-check-label">A. Phần lớn trên 7 điểm 👍</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g3" value="B"> <label class="form-check-label">B. Khoảng 6–7 điểm</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g3" value="C"> <label class="form-check-label">C. Dưới 6 điểm</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g3" value="D"> <label class="form-check-label">D. Không ổn định, lúc được lúc không 😭</label></div>
+                </div>
+                <div class="question-box">
+                    <p>Câu 4️⃣ Khi gặp câu khó trong đề, bạn thường:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g4" value="A"> <label class="form-check-label">A. Bỏ qua, làm câu dễ trước rồi quay lại 💡</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g4" value="B"> <label class="form-check-label">B. Nghĩ một lúc rồi chọn đáp án hợp lý</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g4" value="C"> <label class="form-check-label">C. Làm đại cho kịp giờ</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g4" value="D"> <label class="form-check-label">D. Ngồi nhìn đồng hồ chạy ⏰😶</label></div>
+                </div>
+                <div class="question-box">
+                    <p>Câu 5️⃣ Khi nhìn đề thi thử, cảm giác của bạn là:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g5" value="A"> <label class="form-check-label">A. Nhiều câu quen, làm được ngay</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g5" value="B"> <label class="form-check-label">B. Có quen có lạ</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g5" value="C"> <label class="form-check-label">C. Thấy lạ là nhiều</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="g5" value="D"> <label class="form-check-label">D. Nhìn mà muốn… quay xe 🫠</label></div>
+                </div>
+            </div>
+
+            <div id="sec-holland" class="card-custom dynamic-section">
+                <h4 class="section-title text-success"><i class="fa-solid fa-puzzle-piece me-2"></i>Trắc nghiệm Holland</h4>
+                
+                <div class="question-box">
+                    <p>1. Nếu chiếc xe đạp/máy tính bị hỏng, bạn sẽ:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h1" value="A"> <label class="form-check-label">A. Mở ra và mày mò tìm hiểu cấu tạo, thử tự sửa chữa.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h1" value="B"> <label class="form-check-label">B. Tìm kiếm các tài liệu, video hướng dẫn chi tiết.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h1" value="C"> <label class="form-check-label">C. Thuê một người thợ giỏi đến sửa và quan sát cách họ làm.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h1" value="D"> <label class="form-check-label">D. Kêu gọi bạn bè hoặc người thân giúp đỡ.</label></div>
+                </div>
+                <div class="question-box">
+                    <p>2. Nếu được chọn một môn học ngoại khóa, bạn thích nhất:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h2" value="A"> <label class="form-check-label">A. CLB Dựng phim ngắn hoặc Thiết kế thời trang.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h2" value="B"> <label class="form-check-label">B. CLB Tình nguyện Hỗ trợ trẻ em khó khăn.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h2" value="C"> <label class="form-check-label">C. CLB Khởi nghiệp & Kinh doanh.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h2" value="D"> <label class="form-check-label">D. CLB Nghiên cứu Robot hoặc Giải quyết mô hình Vật lý.</label></div>
+                </div>
+                <div class="question-box">
+                    <p>3. Trong một dự án nhóm, vai trò nào khiến bạn hào hứng nhất?</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h3" value="A"> <label class="form-check-label">A. Người thu thập, sắp xếp dữ liệu, lịch trình.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h3" value="B"> <label class="form-check-label">B. Người lên ý tưởng lớn, "bán" ý tưởng.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h3" value="C"> <label class="form-check-label">C. Người thực hiện tạo hình, đồ họa, viết lời văn.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h3" value="D"> <label class="form-check-label">D. Người hướng dẫn, lắng nghe và hòa giải mâu thuẫn.</label></div>
+                </div>
+                <div class="question-box">
+                    <p>4. Khi đọc một bài báo/tài liệu mới, điều gì hấp dẫn bạn nhất?</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h4" value="A"> <label class="form-check-label">A. Các thông tin về con số, biểu đồ, quy trình.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h4" value="B"> <label class="form-check-label">B. Các giả thuyết khoa học, bằng chứng logic.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h4" value="C"> <label class="form-check-label">C. Câu chuyện truyền cảm hứng về người thành công.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h4" value="D"> <label class="form-check-label">D. Các ý tưởng thiết kế, ngôn ngữ giàu hình ảnh.</label></div>
+                </div>
+                <div class="question-box">
+                    <p>5. Trong thời gian rảnh, bạn thích nhất làm gì?</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h5" value="A"> <label class="form-check-label">A. Đứng lớp, dạy lại kiến thức hoặc làm gia sư.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h5" value="B"> <label class="form-check-label">B. Làm vườn, tập thể hình, phượt hoặc lắp ráp mô hình.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h5" value="C"> <label class="form-check-label">C. Viết nhật ký, sáng tác nhạc, vẽ, thiết kế phòng.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h5" value="D"> <label class="form-check-label">D. Lên kế hoạch chi tiêu, sắp xếp máy tính.</label></div>
+                </div>
+                <div class="question-box">
+                    <p>6. Giả sử bạn tìm được một số tiền, bạn sẽ:</p>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h6" value="A"> <label class="form-check-label">A. Dùng tiền đầu tư, kinh doanh nhỏ xem sinh lời.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h6" value="B"> <label class="form-check-label">B. Phân tích nguồn gốc tiền và tìm chủ nhân trả lại.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h6" value="C"> <label class="form-check-label">C. Dùng tiền tổ chức sự kiện, tiệc cho bạn bè.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h6" value="D"> <label class="form-check-label">D. Mua thiết bị cần thiết phục vụ sở thích cá nhân.</label></div>
+                </div>
+            </div>
+
+            <div id="sec-lucky" class="card-custom dynamic-section text-center">
+                <h4 class="section-title text-danger"><i class="fa-solid fa-gift me-2"></i>Đăng ký Lì Xì Khai Xuân</h4>
+                <p class="fs-5 text-muted">Hệ thống sẽ tự động sinh mã số may mắn cho bạn ngay khi bấm Gửi!</p>
+                <div style="font-size: 60px;">🧧</div>
+            </div>
+
+            <button type="submit" class="btn btn-submit w-100 mt-2" id="btnSubmitAll">
+                GỬI THÔNG TIN VÀ XEM KẾT QUẢ <i class="fa-solid fa-paper-plane ms-2"></i>
+            </button>
+        </form>
+    </div>
+
+    <div id="loading">
+        <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
+        <h3 class="mt-4 text-primary fw-bold">Đang xử lý dữ liệu thông minh...</h3>
+        <p>Vui lòng đợi trong giây lát</p>
+    </div>
+
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title fw-bold text-primary">Tada! Kết quả của bạn đây 🎉</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" id="resultBody"></div>
+                <div class="modal-footer justify-content-center border-0">
+                    <p class="text-muted w-100 text-center mb-0">Dữ liệu đã được bảo mật và gửi đến Ban Tuyển Sinh Việt Mỹ.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 1. CẤU HÌNH API GOOGLE SHEETS Ở ĐÂY
+        const GOOGLE_SCRIPT_URL = "DÁN_LINK_WEB_APP_URL_CỦA_BẠN_VÀO_ĐÂY";
+
+        // 2. LOGIC HIỂN THỊ CÁC KHỐI TEST (Dropdown)
+        const checkBoxes = document.querySelectorAll('.check-experience');
+        const btnDropdown = document.getElementById('dropdownMenuButton');
+
+        checkBoxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                document.getElementById(this.value).style.display = this.checked ? 'block' : 'none';
+                let checkedCount = document.querySelectorAll('.check-experience:checked').length;
+                btnDropdown.querySelector('span').innerText = checkedCount === 0 ? "Vui lòng chọn các mục bên dưới..." : `Đã chọn ${checkedCount} trải nghiệm`;
+                
+                const section = document.getElementById(this.value);
+                const radios = section.querySelectorAll('input[type="radio"]');
+                radios.forEach(r => r.required = this.checked); // Bắt buộc chọn đáp án nếu đã tick làm test
+            });
+        });
+
+        // 3. TÍNH TOÁN VÀ XỬ LÝ KHI BẤM GỬI
+        document.getElementById('mainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loading').style.display = 'block';
+
+            let formData = new FormData(this);
+            
+            // Khởi tạo Object chứa TẤT CẢ thông tin bao gồm cả câu trả lời chi tiết
+            let finalData = {
+                fullName: document.getElementById('fullName').value,
+                dob: document.getElementById('dob').value,
+                zalo: document.getElementById('zalo').value,
+                address: document.getElementById('address').value,
+                school: document.getElementById('school').value,
+                major: document.getElementById('major').value,
+                teacher: document.getElementById('teacher').value,
+                
+                g1: "", g2: "", g3: "", g4: "", g5: "", gradResult: "",
+                h1: "", h2: "", h3: "", h4: "", h5: "", h6: "", hollandResult: "",
+                luckyCode: ""
+            };
+
+            let resultHTML = "";
+
+            // A. TÍNH TỈ LỆ TỐT NGHIỆP
+            if(document.getElementById('chkGrad').checked) {
+                let counts = { A: 0, B: 0, C: 0, D: 0 };
+                for(let i=1; i<=5; i++) {
+                    let ans = formData.get('g'+i);
+                    finalData['g'+i] = ans || ""; 
+                    if(ans) counts[ans]++;
+                }
+                
+                let maxChar = 'A', maxCount = counts['A'];
+                for(let key in counts) { if(counts[key] > maxCount) { maxChar = key; maxCount = counts[key]; } }
+
+                resultHTML += `<div class="result-block"><h5 class="fw-bold text-warning"><i class="fa-solid fa-fire"></i> Tỷ lệ đỗ tốt nghiệp</h5>`;
+                if(maxChar === 'A') {
+                    resultHTML += `<p class="mb-0">🌟 <b>80–95%</b>: Bạn đang ở “vùng an toàn” rồi đó! Giữ phong độ nhé.</p>`;
+                    finalData.gradResult = "80-95% (An toàn)";
+                } else if(maxChar === 'B') {
+                    resultHTML += `<p class="mb-0">👍 <b>65–80%</b>: Ổn áp rồi, chỉ cần tăng tốc chút xíu là bứt phá ngay.</p>`;
+                    finalData.gradResult = "65-80% (Khá ổn)";
+                } else if(maxChar === 'C') {
+                    resultHTML += `<p class="mb-0">⚠️ <b>50–65%</b>: Chưa quá muộn đâu! Chỉnh lại chiến thuật ôn tập từ bây giờ.</p>`;
+                    finalData.gradResult = "50-65% (Cần cố gắng)";
+                } else {
+                    resultHTML += `<p class="mb-0">💪 <b>Dưới 50%</b>: Đừng hoảng! Vẫn còn thời gian để “lật kèo”. Bắt đầu ôn ngay hôm nay.</p>`;
+                    finalData.gradResult = "Dưới 50% (Cần bứt phá)";
+                }
+                resultHTML += `</div>`;
+            }
+
+            // B. TÍNH TEST HOLLAND
+            if(document.getElementById('chkHolland').checked) {
+                const hollandMap = {
+                    h1: {A: 'R', B: 'C', C: 'E', D: 'S'}, h2: {A: 'A', B: 'S', C: 'E', D: 'I'},
+                    h3: {A: 'C', B: 'E', C: 'A', D: 'S'}, h4: {A: 'C', B: 'I', C: 'E', D: 'A'},
+                    h5: {A: 'S', B: 'R', C: 'A', D: 'C'}, h6: {A: 'E', B: 'I', C: 'S', D: 'R'}
+                };
+                const hollandInfo = {
+                    R: { t: "Thực tế", j: "Kỹ thuật, Cơ khí, Công nghệ..." }, I: { t: "Nghiên cứu", j: "Y Dược, CNTT, Khoa học..." },
+                    A: { t: "Nghệ thuật", j: "Thiết kế, Âm nhạc, Truyền thông..." }, S: { t: "Xã hội", j: "Giáo dục, Y tế, Tư vấn..." },
+                    E: { t: "Quản lý", j: "QTKD, Marketing, Tài chính..." }, C: { t: "Nghiệp vụ", j: "Kế toán, Hành chính, Thư ký..." }
+                };
+                
+                let scores = { R:0, I:0, A:0, S:0, E:0, C:0 };
+                for(let i=1; i<=6; i++) {
+                    let ans = formData.get('h'+i);
+                    finalData['h'+i] = ans || ""; 
+                    if(ans) scores[hollandMap['h'+i][ans]]++;
+                }
+
+                let sorted = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+                let top3 = `${sorted[0]} - ${sorted[1]} - ${sorted[2]}`;
+                let mainTrait = sorted[0];
+
+                resultHTML += `<div class="result-block border-left-success" style="border-left-color: #22c55e;"><h5 class="fw-bold text-success"><i class="fa-solid fa-puzzle-piece"></i> Định hướng nghề nghiệp</h5>
+                <p class="mb-1">Mã Holland của bạn: <b>${top3}</b></p>
+                <p class="mb-1">Nhóm nổi trội: <b>${hollandInfo[mainTrait].t}</b></p>
+                <p class="mb-0 text-muted">Ngành phù hợp: ${hollandInfo[mainTrait].j}</p></div>`;
+                
+                finalData.hollandResult = `${top3} (${hollandInfo[mainTrait].t})`;
+            }
+
+            // C. TẠO MÃ LÌ XÌ
+            if(document.getElementById('chkLucky').checked) {
+                const today = new Date();
+                const yy = String(today.getFullYear()).slice(-2);
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                const randomId = String(Math.floor(Math.random() * 900) + 100);
+                const code = yy + mm + dd + randomId;
+
+                resultHTML += `<div class="result-block border-left-danger" style="border-left-color: #ef4444;"><h5 class="fw-bold text-danger"><i class="fa-solid fa-gift"></i> Mã Lì Xì Của Bạn</h5>
+                <h3 class="fw-bold text-center my-3 p-2 bg-white rounded border border-danger">${code}</h3>
+                <p class="mb-0 text-center text-muted small">Hãy lưu lại mã này để nhận lộc từ Việt Mỹ nhé!</p></div>`;
+                
+                finalData.luckyCode = code;
+            }
+
+            if(resultHTML === "") {
+                resultHTML = "<p class='text-center fs-5'>Bạn đã gửi thông tin thành công nhưng chưa chọn làm bài trắc nghiệm nào. TVTS sẽ sớm liên hệ cho bạn!</p>";
+            }
+
+            // GỬI DỮ LIỆU ĐẾN GOOGLE SHEETS
+            if(GOOGLE_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbzl7_LEK1TzqTLIXOWchmHpVUYDxF9rrD3BfzNhfv3Jr2eaGIYriwwrmGrBcmuw7x_8Jw/exec") {
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(finalData)
+                }).then(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('resultBody').innerHTML = resultHTML;
+                    new bootstrap.Modal(document.getElementById('resultModal')).show();
+                    
+                    document.getElementById('mainForm').reset();
+                    document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
+                    btnDropdown.querySelector('span').innerText = "Vui lòng chọn các mục bên dưới...";
+                }).catch(err => {
+                    console.error("Lỗi:", err);
+                    alert("Có lỗi xảy ra khi lưu dữ liệu, vui lòng thử lại!");
+                    document.getElementById('loading').style.display = 'none';
+                });
+            } else {
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('resultBody').innerHTML = resultHTML + "<hr><p class='text-danger text-center small'><i>Lưu ý: Bạn chưa nhập Link Google Script nên dữ liệu chưa được đẩy sang sheet.</i></p>";
+                    new bootstrap.Modal(document.getElementById('resultModal')).show();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
