@@ -122,7 +122,7 @@
                             <input class="form-check-input check-experience d-none" type="checkbox" value="sec-grad" id="chkGrad">
                             <div class="check-content d-flex align-items-center justify-content-center">
                                 <i class="fa-solid fa-fire me-3"></i>
-                                <span class="fs-5 fw-semibold text-muted title-text"> Tính Tỷ lệ đỗ tốt nghiệp. </span>
+                                <span class="fs-5 fw-semibold text-muted title-text">Tính tỷ lệ đỗ tốt nghiệp.</span>
                             </div>
                         </label>
                     </div>
@@ -131,14 +131,14 @@
                             <input class="form-check-input check-experience d-none" type="checkbox" value="sec-holland" id="chkHolland">
                             <div class="check-content d-flex align-items-center justify-content-center">
                                 <i class="fa-solid fa-puzzle-piece me-3"></i>
-                                <span class="fs-5 fw-semibold text-muted title-text">Bạn thực sự hợp ngành nghề nào? </span>
+                                <span class="fs-5 fw-semibold text-muted title-text">Bạn hợp ngành nghề nào?</span>
                             </div>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div id="sec-lucky" class="card-custom dynamic-section text-center animate__animated animate__fadeInUp">
+            <div id="sec-lucky" class="card-custom dynamic-section text-center animate__animated animate__fadeIn">
                 <h3 class="section-title justify-content-center"><i class="fa-solid fa-envelope-open-text icon-gradient-1 fa-lg"></i> Nhận Lì Xì Khai Xuân</h3>
                 <p class="fs-5 text-muted fw-medium mb-4">Nhấn nút bên dưới để hệ thống sinh ngẫu nhiên mã số may mắn cho bạn.</p>
                 
@@ -152,7 +152,7 @@
                 <input type="hidden" id="luckyCodeInput" name="luckyCodeInput" value="">
             </div>
 
-            <div id="sec-grad" class="card-custom dynamic-section animate__animated animate__fadeInUp">
+            <div id="sec-grad" class="card-custom dynamic-section animate__animated animate__fadeIn">
                 <h3 class="section-title"><i class="fa-solid fa-fire icon-gradient-1 fa-lg"></i> Tỷ Lệ Đỗ Tốt Nghiệp</h3>
                 
                 <div class="question-box">
@@ -192,7 +192,7 @@
                 </div>
             </div>
 
-            <div id="sec-holland" class="card-custom dynamic-section animate__animated animate__fadeInUp">
+            <div id="sec-holland" class="card-custom dynamic-section animate__animated animate__fadeIn">
                 <h3 class="section-title"><i class="fa-solid fa-puzzle-piece icon-gradient-2 fa-lg"></i> Trắc Nghiệm Holland</h3>
                 
                 <div class="question-box">
@@ -244,23 +244,23 @@
                 
                 <div class="text-center mb-4">
                     <h3 class="fw-bold text-primary mb-2"><i class="fa-solid fa-gift text-danger me-2"></i> Nhận Kết Quả Ngay!</h3>
-                    <p class="fs-6 text-muted fw-medium">Hãy điền thông tin để Thầy Cô gửi kết quả phân tích chi tiết cho bạn nhé!</p>
+                    <p class="fs-6 text-muted fw-medium">Hãy điền thông tin chuẩn xác để chuyên gia tư vấn liên hệ và gửi kết quả cho bạn nhé!</p>
                 </div>
                 
                 <div class="row g-3 g-md-4">
                     <div class="col-md-6">
                         <label class="form-label">Họ và tên học sinh <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control shadow-sm" id="fullName" required placeholder="Nhập họ tên đầy đủ...">
+                        <input type="text" class="form-control shadow-sm" id="fullName" minlength="5" required placeholder="Nhập đầy đủ họ và tên...">
                     </div>
                     
                     <div class="col-md-6">
                         <label class="form-label">Ngày sinh <span class="text-danger">*</span></label>
-                        <input type="text" inputmode="numeric" class="form-control shadow-sm" id="dob" placeholder="DD/MM/YYYY (Ví dụ: 25/05/2006)" required>
+                        <input type="text" inputmode="numeric" class="form-control shadow-sm" id="dob" pattern="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/\d{4}$" title="Vui lòng nhập đúng định dạng DD/MM/YYYY" placeholder="DD/MM/YYYY (Ví dụ: 25/05/2006)" required>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">SĐT Zalo (Nhận kết quả) <span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control shadow-sm" id="zalo" pattern="[0-9]{10}" maxlength="10" title="Vui lòng nhập chính xác 10 chữ số" required placeholder="Ví dụ: 0901234567">
+                        <input type="tel" class="form-control shadow-sm" id="zalo" pattern="^0\d{9}$" title="Số điện thoại phải bắt đầu bằng số 0 và có đủ 10 chữ số" required placeholder="Ví dụ: 0901234567">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Địa chỉ hiện tại</label>
@@ -307,13 +307,15 @@
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyC5ZgzZoMpiZyJ7JK0EfyHQ572Obw0QRCiTvPMLj1rbu1I-KF0VJtcXUzBo-XX6wub2g/exec";
 
         // ==========================================
-        // TÍNH NĂNG TỰ ĐỘNG FORMAT NGÀY SINH
+        // TÍNH NĂNG TỰ ĐỘNG FORMAT NGÀY SINH & CHỈ CHO NHẬP SỐ
         // ==========================================
         document.getElementById('dob').addEventListener('input', function (e) {
-            // Chỉ giữ lại số
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,4})/);
-            // Tự động chèn gạch chéo
             e.target.value = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
+        });
+
+        document.getElementById('zalo').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, ''); // Cấm nhập chữ cái vào Zalo
         });
 
         // ==========================================
@@ -339,27 +341,35 @@
         window.addEventListener('load', loadTeachersData);
 
         // ==========================================
-        // HIỂN THỊ & SCROLL ĐẾN KHỐI BÀI TEST CHUẨN XÁC
+        // HIỂN THỊ, SCROLL CHUẨN XÁC & CLEAR DATA NẾU HỦY CHỌN
         // ==========================================
         const checkBoxes = document.querySelectorAll('.check-experience');
         checkBoxes.forEach(cb => {
             cb.addEventListener('change', function() {
                 const section = document.getElementById(this.value);
+                const radios = section.querySelectorAll('input[type="radio"]');
+
                 if (this.checked) {
                     section.style.display = 'block';
                     
-                    // Lướt màn hình mượt mà xuống đúng phần mép trên (tiêu đề) của khối
+                    // Bắt buộc làm test nếu đã tích chọn
+                    radios.forEach(r => r.required = true);
+
+                    // Trượt màn hình mượt mà xuống đúng mép trên (tiêu đề) của khối test
                     setTimeout(() => {
-                        const yOffset = -20; // Cách mép trên 20px cho thoáng
-                        const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        const yOffset = -30; // Trừ hao 30px để tiêu đề nằm dưới màn hình dễ nhìn
+                        const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
                         window.scrollTo({top: y, behavior: 'smooth'});
-                    }, 150);
+                    }, 50);
 
                 } else {
                     section.style.display = 'none';
+                    // QUAN TRỌNG: Gỡ thuộc tính bắt buộc và Tẩy xóa hết kết quả đã tick nếu học sinh bỏ chọn
+                    radios.forEach(r => {
+                        r.required = false;
+                        r.checked = false;
+                    });
                 }
-                const radios = section.querySelectorAll('input[type="radio"]');
-                radios.forEach(r => r.required = this.checked);
             });
         });
 
@@ -407,42 +417,56 @@
         document.getElementById('mainForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Tự sinh mã nếu tick chọn mà quên quay số
-            if(document.getElementById('chkLucky').checked && !document.getElementById('luckyCodeInput').value) {
-                const d = new Date();
-                document.getElementById('luckyCodeInput').value = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(Math.floor(Math.random()*900)+100);
+            // XÁC THỰC LẠI BẰNG JAVASCRIPT ĐỂ CHẮC CHẮN 100%
+            const dobInput = document.getElementById('dob').value;
+            const phoneInput = document.getElementById('zalo').value;
+
+            if(dobInput.length !== 10) {
+                Swal.fire({icon: 'error', title: 'Thông tin chưa chuẩn', text: 'Ngày sinh phải đủ định dạng DD/MM/YYYY nhé!'});
+                return;
+            }
+            if(!/^0\d{9}$/.test(phoneInput)) {
+                Swal.fire({icon: 'error', title: 'Thông tin chưa chuẩn', text: 'Số Zalo phải có đủ 10 số và bắt đầu bằng số 0 nhé!'});
+                return;
             }
 
-            // Ép buộc phải chọn ít nhất 1 mục
+            // Ép buộc phải chọn ít nhất 1 mục trải nghiệm
             let checkedCount = document.querySelectorAll('.check-experience:checked').length;
             if(checkedCount === 0) {
                 Swal.fire({
-                    icon: 'warning', title: 'Ê khoan đã!', text: 'Bạn hãy chạm vào các thẻ bên trên để chọn ít nhất 1 bài Test nhé!',
+                    icon: 'warning', title: 'Ê khoan đã!', text: 'Bạn hãy chạm vào các thẻ bên trên để chọn ít nhất 1 bài Test hoặc Lì Xì nhé!',
                     confirmButtonText: 'Đã hiểu', confirmButtonColor: '#764ba2'
                 });
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 return;
             }
 
+            // Tự sinh mã nếu tick Lì Xì mà quên quay số
+            if(document.getElementById('chkLucky').checked && !document.getElementById('luckyCodeInput').value) {
+                const d = new Date();
+                document.getElementById('luckyCodeInput').value = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(Math.floor(Math.random()*900)+100);
+            }
+
             document.getElementById('loading').classList.remove('d-none');
             document.getElementById('loading').classList.add('d-flex');
 
             let formData = new FormData(this);
-            // Ngày sinh giờ đã có định dạng DD/MM/YYYY chuẩn nhờ Hàm Format ở trên
-            let dobFormatted = document.getElementById('dob').value; 
 
+            // Mặc định ban đầu cho bộ dữ liệu là TRẮNG TRƠN (Phòng trường hợp học sinh không làm test)
             let finalData = {
-                fullName: document.getElementById('fullName').value, dob: dobFormatted,
+                fullName: document.getElementById('fullName').value, dob: dobInput,
                 zalo: document.getElementById('zalo').value, address: document.getElementById('address').value,
                 school: document.getElementById('school').value, major: document.getElementById('major').value,
                 teacher: document.getElementById('teacher').value,
-                g1: "", g2: "", g3: "", g4: "", g5: "", gradResult: "",
-                h1: "", h2: "", h3: "", h4: "", h5: "", h6: "", hollandResult: "", 
-                luckyCode: document.getElementById('luckyCodeInput').value 
+                
+                g1: "", g2: "", g3: "", g4: "", g5: "", gradResult: "Không tham gia",
+                h1: "", h2: "", h3: "", h4: "", h5: "", h6: "", hollandResult: "Không tham gia", 
+                luckyCode: "Không nhận lộc" 
             };
 
             let resultHTML = "";
 
+            // NẾU CÓ CHỌN TEST TỈ LỆ ĐỖ -> Tính và gán đè data
             if(document.getElementById('chkGrad').checked) {
                 let counts = { A: 0, B: 0, C: 0, D: 0 };
                 for(let i=1; i<=5; i++) { let ans = formData.get('g'+i); finalData['g'+i] = ans || ""; if(ans) counts[ans]++; }
@@ -455,13 +479,10 @@
                 else if(maxChar === 'C') { title = "50–65%"; desc = "Chưa muộn đâu! Chỉnh lại chiến thuật ôn tập nhé ⚠️"; finalData.gradResult = "50-65% (Cố gắng)"; }
                 else { title = "< 50%"; desc = "Đừng hoảng! Bắt đầu ôn ngay hôm nay để lật kèo 💪"; finalData.gradResult = "Dưới 50% (Bứt phá)"; }
 
-                resultHTML += `<div class="swal-result-box grad">
-                    <h5 class="fw-bold text-muted text-uppercase mb-1"><i class="fa-solid fa-fire text-danger"></i> Tỷ Lệ Tốt Nghiệp</h5>
-                    <div class="swal-big-text text-danger">${title}</div>
-                    <p class="mb-0 fw-medium">${desc}</p>
-                </div>`;
+                resultHTML += `<div class="swal-result-box grad"><h5 class="fw-bold text-muted text-uppercase mb-1"><i class="fa-solid fa-fire text-danger"></i> Tỷ Lệ Tốt Nghiệp</h5><div class="swal-big-text text-danger">${title}</div><p class="mb-0 fw-medium">${desc}</p></div>`;
             }
 
+            // NẾU CÓ CHỌN TEST HOLLAND -> Tính và gán đè data
             if(document.getElementById('chkHolland').checked) {
                 const hMap = { h1: {A:'R',B:'C',C:'E',D:'S'}, h2: {A:'A',B:'S',C:'E',D:'I'}, h3: {A:'C',B:'E',C:'A',D:'S'}, h4: {A:'C',B:'I',C:'E',D:'A'}, h5: {A:'S',B:'R',C:'A',D:'C'}, h6: {A:'E',B:'I',C:'S',D:'R'} };
                 const hInfo = { R:{t:"Thực tế",j:"Kỹ thuật, Cơ khí, Công nghệ"}, I:{t:"Nghiên cứu",j:"Y Dược, CNTT, Khoa học"}, A:{t:"Nghệ thuật",j:"Thiết kế, Âm nhạc, Truyền thông"}, S:{t:"Xã hội",j:"Giáo dục, Y tế, Tư vấn"}, E:{t:"Quản lý",j:"QTKD, Marketing, Tài chính"}, C:{t:"Nghiệp vụ",j:"Kế toán, Hành chính, Thư ký"} };
@@ -472,21 +493,14 @@
                 let top3 = `${sorted[0]}${sorted[1]}${sorted[2]}`;
                 let m = sorted[0];
 
-                resultHTML += `<div class="swal-result-box holland">
-                    <h5 class="fw-bold text-muted text-uppercase mb-1"><i class="fa-solid fa-puzzle-piece" style="color:#23d5ab;"></i> Mã Định Hướng</h5>
-                    <div class="swal-big-text" style="color:#23a6d5;">${top3}</div>
-                    <p class="mb-1 fw-bold">Thiên hướng: ${hInfo[m].t}</p>
-                    <p class="mb-0 fw-medium text-muted">Phù hợp: ${hInfo[m].j}</p>
-                </div>`;
+                resultHTML += `<div class="swal-result-box holland"><h5 class="fw-bold text-muted text-uppercase mb-1"><i class="fa-solid fa-puzzle-piece" style="color:#23d5ab;"></i> Mã Định Hướng</h5><div class="swal-big-text" style="color:#23a6d5;">${top3}</div><p class="mb-1 fw-bold">Thiên hướng: ${hInfo[m].t}</p><p class="mb-0 fw-medium text-muted">Phù hợp: ${hInfo[m].j}</p></div>`;
                 finalData.hollandResult = `${top3} (${hInfo[m].t})`;
             }
 
+            // NẾU CÓ CHỌN LÌ XÌ -> Gán đè data
             if(document.getElementById('chkLucky').checked) {
-                resultHTML += `<div class="swal-result-box lucky text-center bg-white border">
-                    <h5 class="fw-bold text-muted text-uppercase mb-2"><i class="fa-solid fa-gift text-warning"></i> Mã Lì Xì Của Bạn</h5>
-                    <div class="swal-big-text text-warning border border-warning rounded-pill py-2">${finalData.luckyCode}</div>
-                    <p class="mb-0 mt-2 fw-medium small text-muted">Chụp ảnh lại để nhận lộc nhé!</p>
-                </div>`;
+                finalData.luckyCode = document.getElementById('luckyCodeInput').value;
+                resultHTML += `<div class="swal-result-box lucky text-center bg-white border"><h5 class="fw-bold text-muted text-uppercase mb-2"><i class="fa-solid fa-gift text-warning"></i> Mã Lì Xì Của Bạn</h5><div class="swal-big-text text-warning border border-warning rounded-pill py-2">${finalData.luckyCode}</div><p class="mb-0 mt-2 fw-medium small text-muted">Chụp ảnh lại để nhận lộc nhé!</p></div>`;
             }
 
             let finalAlertHTML = `
@@ -512,8 +526,7 @@
 
             if(GOOGLE_SCRIPT_URL !== "DÁN_LINK_WEB_APP_URL_CỦA_BẠN_VÀO_ĐÂY") {
                 fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(finalData)
                 }).then(() => {
                     document.getElementById('loading').classList.add('d-none');
@@ -526,7 +539,6 @@
                         buttonsStyling: false, customClass: { confirmButton: 'btn btn-submit rounded-pill px-5 shadow-sm mt-2' }, backdrop: `rgba(0,0,0,0.6)`
                     });
 
-                    // Reset
                     document.getElementById('mainForm').reset();
                     document.querySelectorAll('.dynamic-section').forEach(el => el.style.display = 'none');
                     document.getElementById('luckyCodeInput').value = '';
