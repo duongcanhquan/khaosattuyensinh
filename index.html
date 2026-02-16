@@ -122,7 +122,7 @@
                             <input class="form-check-input check-experience d-none" type="checkbox" value="sec-grad" id="chkGrad">
                             <div class="check-content d-flex align-items-center justify-content-center">
                                 <i class="fa-solid fa-fire me-3"></i>
-                                <span class="fs-5 fw-semibold text-muted title-text">Tính tỷ lệ đỗ tốt nghiệp.</span>
+                                <span class="fs-5 fw-semibold text-muted title-text">Tính Tỷ lệ đỗ tốt nghiệp</span>
                             </div>
                         </label>
                     </div>
@@ -244,7 +244,7 @@
                 
                 <div class="text-center mb-4">
                     <h3 class="fw-bold text-primary mb-2"><i class="fa-solid fa-gift text-danger me-2"></i> Nhận Kết Quả Ngay!</h3>
-                    <p class="fs-6 text-muted fw-medium">Hãy điền thông tin chuẩn xác để chuyên gia tư vấn liên hệ và gửi kết quả cho bạn nhé!</p>
+                    <p class="fs-6 text-muted fw-medium">Hãy điền thông tin chuẩn xác để Thầy Cô liên hệ gửi kết quả cho bạn nhé!</p>
                 </div>
                 
                 <div class="row g-3 g-md-4">
@@ -295,7 +295,7 @@
 
     <div id="loading" class="d-none">
         <div class="spinner-border" style="width: 4rem; height: 4rem; color: #764ba2;" role="status"></div>
-        <h3 class="mt-4 fw-bold text-center px-3" style="color: #667eea;">Hệ thống đang phân tích...</h3>
+        <h3 class="mt-4 fw-bold text-center px-3" style="color: #667eea;">Hệ thống đang xử lý dữ liệu...</h3>
         <p class="text-muted fw-medium">Chờ một xíu xiu nhé 🚀</p>
     </div>
 
@@ -315,7 +315,7 @@
         });
 
         document.getElementById('zalo').addEventListener('input', function (e) {
-            this.value = this.value.replace(/[^0-9]/g, ''); // Cấm nhập chữ cái vào Zalo
+            this.value = this.value.replace(/[^0-9]/g, ''); 
         });
 
         // ==========================================
@@ -351,20 +351,16 @@
 
                 if (this.checked) {
                     section.style.display = 'block';
-                    
-                    // Bắt buộc làm test nếu đã tích chọn
                     radios.forEach(r => r.required = true);
 
-                    // Trượt màn hình mượt mà xuống đúng mép trên (tiêu đề) của khối test
                     setTimeout(() => {
-                        const yOffset = -30; // Trừ hao 30px để tiêu đề nằm dưới màn hình dễ nhìn
+                        const yOffset = -30;
                         const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
                         window.scrollTo({top: y, behavior: 'smooth'});
                     }, 50);
 
                 } else {
                     section.style.display = 'none';
-                    // QUAN TRỌNG: Gỡ thuộc tính bắt buộc và Tẩy xóa hết kết quả đã tick nếu học sinh bỏ chọn
                     radios.forEach(r => {
                         r.required = false;
                         r.checked = false;
@@ -412,12 +408,11 @@
         }
 
         // ==========================================
-        // TÍNH TOÁN & GỬI DỮ LIỆU
+        // TÍNH TOÁN & GỬI DỮ LIỆU (ĐÃ THAY ĐỔI ĐỂ LƯU CHI TIẾT NỘI DUNG TEXT)
         // ==========================================
         document.getElementById('mainForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // XÁC THỰC LẠI BẰNG JAVASCRIPT ĐỂ CHẮC CHẮN 100%
             const dobInput = document.getElementById('dob').value;
             const phoneInput = document.getElementById('zalo').value;
 
@@ -430,7 +425,6 @@
                 return;
             }
 
-            // Ép buộc phải chọn ít nhất 1 mục trải nghiệm
             let checkedCount = document.querySelectorAll('.check-experience:checked').length;
             if(checkedCount === 0) {
                 Swal.fire({
@@ -441,7 +435,6 @@
                 return;
             }
 
-            // Tự sinh mã nếu tick Lì Xì mà quên quay số
             if(document.getElementById('chkLucky').checked && !document.getElementById('luckyCodeInput').value) {
                 const d = new Date();
                 document.getElementById('luckyCodeInput').value = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(Math.floor(Math.random()*900)+100);
@@ -452,7 +445,6 @@
 
             let formData = new FormData(this);
 
-            // Mặc định ban đầu cho bộ dữ liệu là TRẮNG TRƠN (Phòng trường hợp học sinh không làm test)
             let finalData = {
                 fullName: document.getElementById('fullName').value, dob: dobInput,
                 zalo: document.getElementById('zalo').value, address: document.getElementById('address').value,
@@ -466,10 +458,20 @@
 
             let resultHTML = "";
 
-            // NẾU CÓ CHỌN TEST TỈ LỆ ĐỖ -> Tính và gán đè data
+            // XỬ LÝ TEST TỈ LỆ ĐỖ
             if(document.getElementById('chkGrad').checked) {
                 let counts = { A: 0, B: 0, C: 0, D: 0 };
-                for(let i=1; i<=5; i++) { let ans = formData.get('g'+i); finalData['g'+i] = ans || ""; if(ans) counts[ans]++; }
+                for(let i=1; i<=5; i++) { 
+                    let ans = formData.get('g'+i); 
+                    if(ans) {
+                        counts[ans]++;
+                        // Lấy nội dung chữ của câu trả lời thay vì chỉ lưu A, B, C, D
+                        let labelText = document.querySelector(`input[name="g${i}"]:checked`).nextElementSibling.innerText.trim();
+                        finalData['g'+i] = labelText;
+                    } else {
+                        finalData['g'+i] = "";
+                    }
+                }
                 let maxChar = 'A', maxCount = counts['A'];
                 for(let key in counts) { if(counts[key] > maxCount) { maxChar = key; maxCount = counts[key]; } }
 
@@ -482,13 +484,23 @@
                 resultHTML += `<div class="swal-result-box grad"><h5 class="fw-bold text-muted text-uppercase mb-1"><i class="fa-solid fa-fire text-danger"></i> Tỷ Lệ Tốt Nghiệp</h5><div class="swal-big-text text-danger">${title}</div><p class="mb-0 fw-medium">${desc}</p></div>`;
             }
 
-            // NẾU CÓ CHỌN TEST HOLLAND -> Tính và gán đè data
+            // XỬ LÝ TEST HOLLAND
             if(document.getElementById('chkHolland').checked) {
                 const hMap = { h1: {A:'R',B:'C',C:'E',D:'S'}, h2: {A:'A',B:'S',C:'E',D:'I'}, h3: {A:'C',B:'E',C:'A',D:'S'}, h4: {A:'C',B:'I',C:'E',D:'A'}, h5: {A:'S',B:'R',C:'A',D:'C'}, h6: {A:'E',B:'I',C:'S',D:'R'} };
                 const hInfo = { R:{t:"Thực tế",j:"Kỹ thuật, Cơ khí, Công nghệ"}, I:{t:"Nghiên cứu",j:"Y Dược, CNTT, Khoa học"}, A:{t:"Nghệ thuật",j:"Thiết kế, Âm nhạc, Truyền thông"}, S:{t:"Xã hội",j:"Giáo dục, Y tế, Tư vấn"}, E:{t:"Quản lý",j:"QTKD, Marketing, Tài chính"}, C:{t:"Nghiệp vụ",j:"Kế toán, Hành chính, Thư ký"} };
                 
                 let scores = { R:0, I:0, A:0, S:0, E:0, C:0 };
-                for(let i=1; i<=6; i++) { let ans = formData.get('h'+i); finalData['h'+i] = ans || ""; if(ans) scores[hMap['h'+i][ans]]++; }
+                for(let i=1; i<=6; i++) { 
+                    let ans = formData.get('h'+i); 
+                    if(ans) {
+                        scores[hMap['h'+i][ans]]++;
+                        // Lấy nội dung chữ của câu trả lời
+                        let labelText = document.querySelector(`input[name="h${i}"]:checked`).nextElementSibling.innerText.trim();
+                        finalData['h'+i] = labelText;
+                    } else {
+                        finalData['h'+i] = "";
+                    }
+                }
                 let sorted = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
                 let top3 = `${sorted[0]}${sorted[1]}${sorted[2]}`;
                 let m = sorted[0];
@@ -497,7 +509,6 @@
                 finalData.hollandResult = `${top3} (${hInfo[m].t})`;
             }
 
-            // NẾU CÓ CHỌN LÌ XÌ -> Gán đè data
             if(document.getElementById('chkLucky').checked) {
                 finalData.luckyCode = document.getElementById('luckyCodeInput').value;
                 resultHTML += `<div class="swal-result-box lucky text-center bg-white border"><h5 class="fw-bold text-muted text-uppercase mb-2"><i class="fa-solid fa-gift text-warning"></i> Mã Lì Xì Của Bạn</h5><div class="swal-big-text text-warning border border-warning rounded-pill py-2">${finalData.luckyCode}</div><p class="mb-0 mt-2 fw-medium small text-muted">Chụp ảnh lại để nhận lộc nhé!</p></div>`;
