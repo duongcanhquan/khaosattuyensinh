@@ -2,14 +2,16 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Khám Phá Bản Thân Cùng Việt Mỹ</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         body {
@@ -17,28 +19,40 @@
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            color: #2d3748; min-height: 100vh; padding-top: 40px; padding-bottom: 60px;
+            color: #2d3748; min-height: 100vh; padding-top: 30px; padding-bottom: 50px;
+            overflow-x: hidden;
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         
+        /* Hiệu ứng Logo thả trôi */
+        .logo-container { text-align: center; margin-bottom: 20px; }
+        .main-logo {
+            max-width: 180px; height: auto;
+            animation: floatLogo 3s ease-in-out infinite;
+            filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.2));
+        }
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
         .card-custom {
-            background: rgba(255, 255, 255, 0.95); border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95); border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.5); padding: 35px; margin-bottom: 25px;
         }
+        
         .form-control, .form-select {
-            border-radius: 15px; padding: 14px 20px; border: 1px solid #e2e8f0;
-            background: rgba(255, 255, 255, 0.8); font-weight: 500; color: #1e293b; transition: all 0.3s;
+            border-radius: 16px; padding: 15px 20px; border: 2px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.9); font-weight: 500; color: #1e293b; transition: all 0.3s;
         }
-        .form-control:focus, .form-select:focus { background: #ffffff; box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.15); border-color: #764ba2; }
-        .form-label { font-weight: 700; color: #334155; margin-bottom: 8px; }
+        .form-control:focus, .form-select:focus { background: #ffffff; box-shadow: 0 0 0 5px rgba(118, 75, 162, 0.15); border-color: #764ba2; outline: none; }
+        .form-label { font-weight: 700; color: #334155; margin-bottom: 8px; font-size: 0.95rem; }
 
         .btn-submit {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
-            font-weight: 800; font-size: 1.2rem; padding: 16px 30px; border-radius: 50px; border: none;
+            font-weight: 800; font-size: 1.2rem; padding: 18px 30px; border-radius: 50px; border: none;
             text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(118, 75, 162, 0.4);
         }
         .btn-submit:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(118, 75, 162, 0.6); color: white; }
+        .btn-submit:active { transform: translateY(2px); }
         
         .btn-dropdown-custom { background: rgba(255,255,255,0.9); border: 2px solid #667eea; color: #475569; border-radius: 50px; font-weight: 700; }
         .dropdown-menu-custom { border-radius: 20px; border: none; box-shadow: 0 15px 40px rgba(0,0,0,0.15); padding: 15px; }
@@ -50,35 +64,53 @@
         .icon-gradient-3 { background: -webkit-linear-gradient(#667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .question-box { background: rgba(248, 250, 252, 0.6); padding: 22px; border-radius: 18px; margin-bottom: 20px; border: 1px solid rgba(226, 232, 240, 0.8); transition: all 0.3s; }
-        .question-box:hover { background: #ffffff; border-color: #667eea; transform: scale(1.01); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.1); }
+        .question-box:hover { background: #ffffff; border-color: #667eea; transform: scale(1.02); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15); }
         .question-box p { font-weight: 700; margin-bottom: 12px; font-size: 1.05rem; }
         .form-check-label { cursor: pointer; font-weight: 500; padding-left: 5px; }
-        .form-check-input { width: 1.3em; height: 1.3em; cursor: pointer; border-color: #cbd5e1; }
+        .form-check-input { width: 1.4em; height: 1.4em; cursor: pointer; border-color: #cbd5e1; margin-top: 0.15em; }
         .form-check-input:checked { background-color: #e73c7e; border-color: #e73c7e; }
 
         .dynamic-section { display: none; }
-        .swal2-popup { border-radius: 25px !important; padding: 20px !important; }
-        .swal-result-box { background: #f8fafc; border-radius: 15px; padding: 20px; margin-bottom: 15px; border-left: 6px solid; text-align: left; }
+        .swal2-popup { border-radius: 25px !important; padding: 25px !important; }
+        .swal-result-box { background: #f8fafc; border-radius: 16px; padding: 20px; margin-bottom: 15px; border-left: 6px solid; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
         .swal-result-box.grad { border-color: #e73c7e; }
         .swal-result-box.holland { border-color: #23d5ab; }
         .swal-result-box.lucky { border-color: #f59e0b; }
-        .swal-big-text { font-size: 2rem; font-weight: 900; line-height: 1.2; margin: 10px 0; }
+        .swal-big-text { font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin: 10px 0; letter-spacing: -0.5px; }
         
-        #loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
+        #loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
+
+        /* TỐI ƯU HÓA MOBILE */
+        @media (max-width: 768px) {
+            .card-custom { padding: 20px; margin-bottom: 15px; border-radius: 20px; }
+            .header-title { font-size: 2rem; }
+            .form-control, .form-select { padding: 12px 15px; font-size: 16px; /* Cấm iOS tự zoom */ }
+            .btn-submit { font-size: 1.1rem; padding: 15px 20px; width: 100%; }
+            .question-box { padding: 15px; }
+            .swal2-popup { padding: 15px !important; width: 95% !important; }
+            .swal-big-text { font-size: 1.6rem; }
+            .logo-container { margin-bottom: 10px; }
+            .main-logo { max-width: 140px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="container animate__animated animate__fadeInDown">
-        <div class="text-center mb-5">
+        
+        <div class="logo-container">
+            <img src="https://via.placeholder.com/300x100.png?text=LOGO+VI%E1%BB%86T+M%E1%BB%B9" alt="Logo Việt Mỹ" class="main-logo">
+        </div>
+
+        <div class="text-center mb-4 mb-md-5">
             <h1 class="header-title display-5">🚀 TƯƠNG LAI TRONG TAY BẠN</h1>
-            <p class="text-white fs-5 opacity-75 fw-medium">Cùng Việt Mỹ định hướng ngành nghề & rinh lộc may mắn!</p>
+            <p class="text-white fs-5 opacity-75 fw-medium px-2">Định hướng ngành nghề & Rinh lộc may mắn!</p>
         </div>
 
         <form id="mainForm">
             <div class="card-custom">
                 <h3 class="section-title"><i class="fa-solid fa-id-badge icon-gradient-3 fa-lg"></i> Thông Tin Cơ Bản</h3>
-                <div class="row g-4">
+                <div class="row g-3 g-md-4">
                     <div class="col-md-6">
                         <label class="form-label">Họ và tên học sinh <span class="text-danger">*</span></label>
                         <input type="text" class="form-control shadow-sm" id="fullName" required placeholder="Nhập họ tên đầy đủ...">
@@ -89,7 +121,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">SĐT Zalo (Nhận kết quả) <span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control shadow-sm" id="zalo" pattern="[0-9]{10}" maxlength="10" title="Vui lòng nhập chính xác 10 chữ số, ví dụ: 0901234567" required placeholder="Ví dụ: 0901234567">
+                        <input type="tel" class="form-control shadow-sm" id="zalo" pattern="[0-9]{10}" maxlength="10" title="Vui lòng nhập chính xác 10 chữ số" required placeholder="Ví dụ: 0901234567">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Địa chỉ hiện tại</label>
@@ -116,33 +148,33 @@
                 <h3 class="section-title"><i class="fa-solid fa-layer-group icon-gradient-2 fa-lg"></i> Bạn Muốn Khám Phá Gì?</h3>
                 <div class="dropdown">
                     <button class="btn btn-dropdown-custom w-100 text-start d-flex justify-content-between align-items-center p-3 fs-5" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span><i class="fa-solid fa-hand-pointer me-2"></i> Bấm để chọn bài Test...</span>
+                        <span><i class="fa-solid fa-hand-pointer me-2 animate__animated animate__pulse animate__infinite"></i> Bấm để chọn bài Test...</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-custom w-100" aria-labelledby="dropdownMenuButton" onclick="event.stopPropagation()">
                         <li>
                             <div class="form-check p-2 rounded hover-bg">
                                 <input class="form-check-input check-experience ms-1" type="checkbox" value="sec-grad" id="chkGrad">
-                                <label class="form-check-label ms-2 fs-5" for="chkGrad">🎯 Dự đoán Tỷ lệ đỗ Tốt Nghiệp</label>
+                                <label class="form-check-label ms-2 fs-6 fs-md-5" for="chkGrad">🎯 Dự đoán Tỷ lệ đỗ Tốt Nghiệp</label>
                             </div>
                         </li>
                         <li>
                             <div class="form-check p-2 rounded hover-bg mt-2">
                                 <input class="form-check-input check-experience ms-1" type="checkbox" value="sec-holland" id="chkHolland">
-                                <label class="form-check-label ms-2 fs-5" for="chkHolland">🧠 Trắc nghiệm Tính cách Holland</label>
+                                <label class="form-check-label ms-2 fs-6 fs-md-5" for="chkHolland">🧠 Trắc nghiệm Tính cách Holland</label>
                             </div>
                         </li>
                         <li>
                             <div class="form-check p-2 rounded hover-bg mt-2">
                                 <input class="form-check-input check-experience ms-1" type="checkbox" value="sec-lucky" id="chkLucky">
-                                <label class="form-check-label ms-2 fs-5" for="chkLucky">🧧 Rút mã Lì Xì Khai Xuân</label>
+                                <label class="form-check-label ms-2 fs-6 fs-md-5" for="chkLucky">🧧 Rút mã Lì Xì Khai Xuân</label>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div id="sec-grad" class="card-custom dynamic-section animate__animated animate__fadeInUp">
+            <div id="sec-grad" class="card-custom dynamic-section animate__animated animate__zoomIn">
                 <h3 class="section-title"><i class="fa-solid fa-fire icon-gradient-1 fa-lg"></i> Tỷ Lệ Đỗ Tốt Nghiệp</h3>
                 
                 <div class="question-box">
@@ -160,7 +192,7 @@
                     <div class="form-check"><input class="form-check-input" type="radio" name="g2" value="D"> <label class="form-check-label">D. Chủ yếu là… để mai 📱</label></div>
                 </div>
                 <div class="question-box">
-                    <p>Câu 3️⃣ Kết quả các bài kiểm tra/thi thử gần đây của bạn:</p>
+                    <p>Câu 3️⃣ Kết quả bài thi thử gần đây của bạn:</p>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="g3" value="A"> <label class="form-check-label">A. Phần lớn trên 7 điểm 👍</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="g3" value="B"> <label class="form-check-label">B. Khoảng 6–7 điểm</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="g3" value="C"> <label class="form-check-label">C. Dưới 6 điểm</label></div>
@@ -182,12 +214,12 @@
                 </div>
             </div>
 
-            <div id="sec-holland" class="card-custom dynamic-section animate__animated animate__fadeInUp">
+            <div id="sec-holland" class="card-custom dynamic-section animate__animated animate__zoomIn">
                 <h3 class="section-title"><i class="fa-solid fa-puzzle-piece icon-gradient-2 fa-lg"></i> Trắc Nghiệm Holland</h3>
                 
                 <div class="question-box">
-                    <p>1. Nếu chiếc xe đạp/máy tính bị hỏng, bạn sẽ:</p>
-                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h1" value="A"> <label class="form-check-label">A. Mở ra tìm hiểu cấu tạo, tự sửa chữa.</label></div>
+                    <p>1. Nếu chiếc xe/máy tính bị hỏng, bạn sẽ:</p>
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h1" value="A"> <label class="form-check-label">A. Mở ra tìm hiểu cấu tạo, tự sửa.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h1" value="B"> <label class="form-check-label">B. Tìm video hướng dẫn chi tiết.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h1" value="C"> <label class="form-check-label">C. Thuê thợ giỏi đến sửa và quan sát.</label></div>
                     <div class="form-check"><input class="form-check-input" type="radio" name="h1" value="D"> <label class="form-check-label">D. Kêu gọi bạn bè/người thân giúp đỡ.</label></div>
@@ -200,9 +232,9 @@
                     <div class="form-check"><input class="form-check-input" type="radio" name="h2" value="D"> <label class="form-check-label">D. CLB Nghiên cứu Robot / Vật lý.</label></div>
                 </div>
                 <div class="question-box">
-                    <p>3. Trong dự án nhóm, vai trò khiến bạn hào hứng nhất?</p>
-                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h3" value="A"> <label class="form-check-label">A. Người thu thập, sắp xếp dữ liệu, lịch trình.</label></div>
-                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h3" value="B"> <label class="form-check-label">B. Người lên ý tưởng lớn, "bán" ý tưởng.</label></div>
+                    <p>3. Trong dự án nhóm, vai trò nào khiến bạn hào hứng?</p>
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h3" value="A"> <label class="form-check-label">A. Người thu thập, sắp xếp lịch trình.</label></div>
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h3" value="B"> <label class="form-check-label">B. Người lên ý tưởng, "bán" ý tưởng.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h3" value="C"> <label class="form-check-label">C. Thực hiện tạo hình, đồ họa, lời văn.</label></div>
                     <div class="form-check"><input class="form-check-input" type="radio" name="h3" value="D"> <label class="form-check-label">D. Người hướng dẫn, lắng nghe, hòa giải.</label></div>
                 </div>
@@ -211,33 +243,33 @@
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h4" value="A"> <label class="form-check-label">A. Con số, biểu đồ, quy trình.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h4" value="B"> <label class="form-check-label">B. Giả thuyết khoa học, bằng chứng logic.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h4" value="C"> <label class="form-check-label">C. Câu chuyện truyền cảm hứng thành công.</label></div>
-                    <div class="form-check"><input class="form-check-input" type="radio" name="h4" value="D"> <label class="form-check-label">D. Ý tưởng thiết kế, ngôn ngữ giàu hình ảnh.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h4" value="D"> <label class="form-check-label">D. Ý tưởng thiết kế, ngôn ngữ hình ảnh.</label></div>
                 </div>
                 <div class="question-box">
                     <p>5. Trong thời gian rảnh, bạn thích nhất làm gì?</p>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h5" value="A"> <label class="form-check-label">A. Dạy lại kiến thức hoặc làm gia sư.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h5" value="B"> <label class="form-check-label">B. Làm vườn, tập gym, phượt, lắp ráp.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h5" value="C"> <label class="form-check-label">C. Viết nhật ký, vẽ, sáng tác nhạc.</label></div>
-                    <div class="form-check"><input class="form-check-input" type="radio" name="h5" value="D"> <label class="form-check-label">D. Lên kế hoạch chi tiêu, sắp xếp tài liệu.</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="h5" value="D"> <label class="form-check-label">D. Lên kế hoạch chi tiêu, sắp xếp máy tính.</label></div>
                 </div>
                 <div class="question-box">
                     <p>6. Giả sử bạn nhặt được tiền, bạn sẽ:</p>
-                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h6" value="A"> <label class="form-check-label">A. Đem đầu tư, kinh doanh nhỏ xem sinh lời.</label></div>
-                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h6" value="B"> <label class="form-check-label">B. Phân tích nguồn gốc để tìm trả người mất.</label></div>
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h6" value="A"> <label class="form-check-label">A. Đem đầu tư, kinh doanh nhỏ sinh lời.</label></div>
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h6" value="B"> <label class="form-check-label">B. Phân tích nguồn gốc để tìm trả lại.</label></div>
                     <div class="form-check mb-2"><input class="form-check-input" type="radio" name="h6" value="C"> <label class="form-check-label">C. Tổ chức tiệc tùng cho bạn bè.</label></div>
                     <div class="form-check"><input class="form-check-input" type="radio" name="h6" value="D"> <label class="form-check-label">D. Mua thiết bị phục vụ sở thích cá nhân.</label></div>
                 </div>
             </div>
 
-            <div id="sec-lucky" class="card-custom dynamic-section text-center animate__animated animate__fadeInUp">
+            <div id="sec-lucky" class="card-custom dynamic-section text-center animate__animated animate__zoomIn">
                 <h3 class="section-title justify-content-center"><i class="fa-solid fa-envelope-open-text icon-gradient-1 fa-lg"></i> Nhận Lì Xì Khai Xuân</h3>
                 <p class="fs-5 text-muted fw-medium">Nhấn Gửi để hệ thống phát lộc tự động cho bạn nhé!</p>
                 <div style="font-size: 80px; text-shadow: 0 10px 20px rgba(0,0,0,0.2); animation: pulse 2s infinite;">🧧</div>
             </div>
 
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-submit w-100" id="btnSubmitAll">
-                    <i class="fa-solid fa-paper-plane me-2"></i> GỬI THÔNG TIN VÀ XEM KẾT QUẢ NGAY
+            <div class="text-center mt-3 mt-md-4">
+                <button type="submit" class="btn btn-submit shadow-lg" id="btnSubmitAll">
+                    <i class="fa-solid fa-paper-plane me-2"></i> GỬI VÀ XEM KẾT QUẢ NGAY
                 </button>
             </div>
         </form>
@@ -245,36 +277,38 @@
 
     <div id="loading" class="d-none">
         <div class="spinner-border" style="width: 4rem; height: 4rem; color: #764ba2;" role="status"></div>
-        <h3 class="mt-4 fw-bold" style="color: #667eea;">Hệ thống đang phân tích...</h3>
+        <h3 class="mt-4 fw-bold text-center px-3" style="color: #667eea;">Hệ thống đang phân tích...</h3>
         <p class="text-muted fw-medium">Chờ một xíu xiu nhé 🚀</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 1. DÁN LINK GOOGLE SCRIPT VÀO ĐÂY
-        const GOOGLE_SCRIPT_URL = "DÁN_LINK_WEB_APP_URL_CỦA_BẠN_VÀO_ĐÂY";
+        // 1. DÁN LINK GOOGLE SCRIPT VÀO ĐÂY (Link mới sau khi cập nhật mã JSONP)
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZu88ArF-bJ8MtApiH4RpmqdzL2WQMa5GSgOaV0sHDahtnLx79rE5OByuyqsF_j11dKA/exec";
 
-        // Tự động load danh sách Thầy Cô từ Google Sheet khi vào trang
-        window.addEventListener('load', function() {
-            if (GOOGLE_SCRIPT_URL.includes("script.google.com")) {
-                fetch(GOOGLE_SCRIPT_URL, { redirect: "follow" })
-                .then(res => res.json())
-                .then(data => {
-                    const select = document.getElementById('teacher');
-                    select.innerHTML = '<option value="">-- Chọn Thầy/Cô (Tùy chọn) --</option>';
-                    data.forEach(t => {
-                        let opt = document.createElement('option');
-                        opt.value = `${t.name} - ${t.email}`; // Lưu Tên và Email để n8n bắt
-                        opt.text = t.name;
-                        select.appendChild(opt);
-                    });
-                }).catch(err => {
-                    console.error("Lỗi:", err);
-                    document.getElementById('teacher').innerHTML = '<option value="">(Lỗi tải danh sách)</option>';
-                });
-            }
-        });
+        // 2. TẢI DANH SÁCH THẦY CÔ BẰNG JSONP (Chống lỗi CORS)
+        function loadTeachersData() {
+            if (!GOOGLE_SCRIPT_URL.includes("script.google.com")) return;
+            const script = document.createElement('script');
+            script.src = GOOGLE_SCRIPT_URL + "?callback=handleTeacherData";
+            document.body.appendChild(script);
+        }
 
+        function handleTeacherData(data) {
+            const select = document.getElementById('teacher');
+            select.innerHTML = '<option value="">-- Chọn Thầy/Cô (Tùy chọn) --</option>';
+            data.forEach(t => {
+                let opt = document.createElement('option');
+                opt.value = `${t.name} - ${t.email}`;
+                opt.text = t.name;
+                select.appendChild(opt);
+            });
+        }
+
+        // Kích hoạt hàm khi load trang
+        window.addEventListener('load', loadTeachersData);
+
+        // HIỂN THỊ CÁC KHỐI TEST
         const checkBoxes = document.querySelectorAll('.check-experience');
         const btnDropdown = document.getElementById('dropdownMenuButton');
 
@@ -283,7 +317,6 @@
                 const section = document.getElementById(this.value);
                 if (this.checked) {
                     section.style.display = 'block';
-                    section.classList.add('animate__fadeInUp');
                 } else {
                     section.style.display = 'none';
                 }
@@ -296,6 +329,7 @@
             });
         });
 
+        // TÍNH TOÁN & HIỂN THỊ KẾT QUẢ
         document.getElementById('mainForm').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('loading').classList.remove('d-none');
@@ -303,7 +337,7 @@
 
             let formData = new FormData(this);
             
-            // Format ngày sinh từ YYYY-MM-DD sang DD/MM/YYYY
+            // Xử lý ngày sinh
             let dobRaw = document.getElementById('dob').value;
             let [y, m, d] = dobRaw.split('-');
             let dobFormatted = `${d}/${m}/${y}`;
@@ -360,25 +394,37 @@
             if(document.getElementById('chkLucky').checked) {
                 const d = new Date();
                 const code = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(Math.floor(Math.random()*900)+100);
-                resultHTML += `<div class="swal-result-box lucky text-center bg-white shadow-sm border">
+                resultHTML += `<div class="swal-result-box lucky text-center bg-white">
                     <h5 class="fw-bold text-muted text-uppercase mb-2"><i class="fa-solid fa-gift text-warning"></i> Mã Lì Xì Của Bạn</h5>
                     <div class="swal-big-text text-warning border border-warning rounded-pill py-2">${code}</div>
-                    <p class="mb-0 mt-2 fw-medium small text-muted">Chụp ảnh lại để TVTS tặng lộc nhé!</p>
+                    <p class="mb-0 mt-2 fw-medium small text-muted">Chụp ảnh lại để nhận lộc nhé!</p>
                 </div>`;
                 finalData.luckyCode = code;
             }
 
-            // Gắn thông báo tùy chỉnh lên đầu nội dung SweetAlert
             let finalAlertHTML = `
                 <div class="mb-4 p-3 rounded" style="background: rgba(118, 75, 162, 0.08); border: 2px dashed #764ba2;">
-                    <p class="fs-5 fw-bold mb-0" style="color: #764ba2; line-height: 1.5;">
+                    <p class="fs-6 fw-bold mb-0" style="color: #764ba2; line-height: 1.5;">
                         "Chuyên gia tư vấn sẽ gọi điện và gửi tới em thông tin kết quả chi tiết, em hãy cùng chờ những bất ngờ và nhận lì xì nhé!" 🎁
                     </p>
                 </div>
                 ${resultHTML}
             `;
 
-            if(GOOGLE_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbxYHnpw8IaV8Xh0ZPRYG8f7nOdf4EEIK0SFPQrT3mFVGZJEP4sMA2W3GXh78xpK4sw90w/exec") {
+            // Hàm kích hoạt hiệu ứng pháo giấy
+            function fireConfetti() {
+                var duration = 3 * 1000; var animationEnd = Date.now() + duration; var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+                function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) { return clearInterval(interval); }
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                }, 250);
+            }
+
+            if(GOOGLE_SCRIPT_URL !== "DÁN_LINK_WEB_APP_URL_CỦA_BẠN_VÀO_ĐÂY") {
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST', mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
@@ -387,14 +433,16 @@
                     document.getElementById('loading').classList.add('d-none');
                     document.getElementById('loading').classList.remove('d-flex');
                     
+                    fireConfetti(); // Bắn pháo giấy
+                    
                     Swal.fire({
-                        title: '🎉 GỬI THÀNH CÔNG! 🎉',
+                        title: '🎉 GỬI THÀNH CÔNG!',
                         html: finalAlertHTML,
-                        width: 650,
+                        width: 600,
                         confirmButtonText: 'TUYỆT VỜI!',
                         buttonsStyling: false,
-                        customClass: { confirmButton: 'btn btn-submit rounded-pill px-5 shadow-sm mt-3' },
-                        backdrop: `rgba(0,0,123,0.4)`
+                        customClass: { confirmButton: 'btn btn-submit rounded-pill px-5 shadow-sm mt-2' },
+                        backdrop: `rgba(0,0,0,0.6)`
                     });
 
                     document.getElementById('mainForm').reset();
@@ -407,7 +455,8 @@
             } else {
                 setTimeout(() => {
                     document.getElementById('loading').classList.add('d-none');
-                    Swal.fire({ title: '🎉 GỬI THÀNH CÔNG! 🎉', html: finalAlertHTML + "<hr><p class='text-danger fw-bold small text-center'>*Chưa gắn link Google Sheet.</p>", width: 650, confirmButtonText: 'ĐÓNG', buttonsStyling: false, customClass: { confirmButton: 'btn btn-submit rounded-pill px-5 mt-3' }});
+                    fireConfetti();
+                    Swal.fire({ title: '🎉 GỬI THÀNH CÔNG!', html: finalAlertHTML + "<hr><p class='text-danger fw-bold small text-center'>*Chưa gắn link Google Sheet.</p>", confirmButtonText: 'ĐÓNG', buttonsStyling: false, customClass: { confirmButton: 'btn btn-submit rounded-pill px-5 mt-2' }});
                 }, 1000);
             }
         });
